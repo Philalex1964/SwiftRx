@@ -45,6 +45,8 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        title = "RxSwift TableView"
 
         view.addSubview(tableView)
         tableView.frame = view.bounds
