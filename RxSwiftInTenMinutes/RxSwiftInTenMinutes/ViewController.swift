@@ -11,39 +11,39 @@ import RxSwift
 class ViewController: UIViewController {
     let bag = DisposeBag()
     
-    var behaviorSubject = BehaviorSubject<String>(value: "Initial value")
+    var replaySubject = ReplaySubject<String>.create(bufferSize: 5)
         
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let firstSubscription = behaviorSubject.subscribe {
+        let firstSubscription = replaySubject.subscribe {
             print("first: \($0)")
         }.disposed(by: bag)
         
-        behaviorSubject.onNext("1")
-        behaviorSubject.onNext("2")
+        replaySubject.onNext("1")
+        replaySubject.onNext("2")
         
-        let secondSubscription = behaviorSubject.subscribe {
+        let secondSubscription = replaySubject.subscribe {
             print("second: \($0)")
         }
         
-        behaviorSubject.onNext("3")
-        behaviorSubject.onNext("4")
+        replaySubject.onNext("3")
+        replaySubject.onNext("4")
         
-        let thirdSubscription = behaviorSubject.subscribe {
+        let thirdSubscription = replaySubject.subscribe {
             print("third: \($0)")
         }
         
-        behaviorSubject.onNext("5")
+        replaySubject.onNext("5")
         
         secondSubscription.dispose()
         thirdSubscription.dispose()
         
-        behaviorSubject.onNext("0")
+        replaySubject.onNext("0")
         
-        behaviorSubject.onCompleted()
+        replaySubject.onCompleted()
         
-        behaviorSubject.onNext("10")
+        replaySubject.onNext("10")
     }
 
 
