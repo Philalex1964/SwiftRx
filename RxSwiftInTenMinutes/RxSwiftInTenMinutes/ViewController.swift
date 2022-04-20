@@ -7,43 +7,44 @@
 
 import UIKit
 import RxSwift
+import RxRelay
 
 class ViewController: UIViewController {
     let bag = DisposeBag()
     
-    var replaySubject = ReplaySubject<String>.create(bufferSize: 5)
+    var behaviorRelay = BehaviorRelay<String>.init(value: "Initial value")
         
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let firstSubscription = replaySubject.subscribe {
+        let firstSubscription = behaviorRelay.subscribe {
             print("first: \($0)")
         }.disposed(by: bag)
         
-        replaySubject.onNext("1")
-        replaySubject.onNext("2")
+        behaviorRelay.accept("1")
+        behaviorRelay.accept("2")
         
-        let secondSubscription = replaySubject.subscribe {
+        let secondSubscription = behaviorRelay.subscribe {
             print("second: \($0)")
         }
         
-        replaySubject.onNext("3")
-        replaySubject.onNext("4")
+        behaviorRelay.accept("3")
+        behaviorRelay.accept("4")
         
-        let thirdSubscription = replaySubject.subscribe {
+        let thirdSubscription = behaviorRelay.subscribe {
             print("third: \($0)")
         }
         
-        replaySubject.onNext("5")
+        behaviorRelay.accept("5")
         
         secondSubscription.dispose()
         thirdSubscription.dispose()
         
-        replaySubject.onNext("0")
+        behaviorRelay.accept("0")
         
-        replaySubject.onCompleted()
+//        behaviorRelay.onCompleted()
         
-        replaySubject.onNext("10")
+        behaviorRelay.accept("10")
     }
 
 
