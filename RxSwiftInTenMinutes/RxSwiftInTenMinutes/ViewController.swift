@@ -11,56 +11,39 @@ import RxSwift
 class ViewController: UIViewController {
     let bag = DisposeBag()
     
-    var publishSubject = PublishSubject<Any>()
+    var behaviorSubject = BehaviorSubject<String>(value: "Initial value")
         
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let subscription1 = publishSubject.subscribe(onNext:{
-          print("s1 \($0)")
-        }).disposed(by: bag)
-        // Subscription1 receives these 2 events, Subscription2 won't
-        
-        publishSubject.onNext("Hello")
-        publishSubject.onNext("World")
-
-        // Sub2 will not get "Hello" and "Again" because it susbcribed later
-        let subscription2 = publishSubject.subscribe(onNext:{
-          print(#line,$0)
-        }).disposed(by: bag)
-        
-        publishSubject.onNext("Both Subscriptions receive this message")
-        
-        let firstSubscription = publishSubject.subscribe {
+        let firstSubscription = behaviorSubject.subscribe {
             print("first: \($0)")
-        }
+        }.disposed(by: bag)
         
-        publishSubject.onNext("1")
-        publishSubject.onNext("2")
+        behaviorSubject.onNext("1")
+        behaviorSubject.onNext("2")
         
-        let secondSubscription = publishSubject.subscribe {
+        let secondSubscription = behaviorSubject.subscribe {
             print("second: \($0)")
         }
         
-        publishSubject.onNext("3")
-        publishSubject.onNext("4")
+        behaviorSubject.onNext("3")
+        behaviorSubject.onNext("4")
         
-        let thirdSubscription = publishSubject.subscribe {
-            print("second: \($0)")
+        let thirdSubscription = behaviorSubject.subscribe {
+            print("third: \($0)")
         }
         
-        firstSubscription.dispose()
-        
-        publishSubject.onNext("5")
+        behaviorSubject.onNext("5")
         
         secondSubscription.dispose()
         thirdSubscription.dispose()
         
-        publishSubject.onNext("0")
+        behaviorSubject.onNext("0")
         
-        publishSubject.onCompleted()
+        behaviorSubject.onCompleted()
         
-        publishSubject.onNext("10")
+        behaviorSubject.onNext("10")
     }
 
 
