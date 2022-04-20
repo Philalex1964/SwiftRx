@@ -61,8 +61,13 @@ class ViewController: UIViewController {
         }.disposed(by: bag)
         
         // Bind a model selected handler
-        tableView.rx.modelSelected(Product.self).bind { product in
+        tableView.rx.modelSelected(Product.self).bind { [weak self] product in
             print(product.title)
+            let detailVC = UIViewController()
+            detailVC.title = "Detail"
+            detailVC.view.backgroundColor = .white
+            
+            self?.navigationController?.pushViewController(detailVC, animated: true)
         }.disposed(by: bag)
         
         // fetch items
