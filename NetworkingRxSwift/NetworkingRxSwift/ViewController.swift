@@ -6,14 +6,38 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
 
 class ViewController: UIViewController {
+    var posts: [PostModel] = []
+    let disposedBag = DisposeBag()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+
+        let client = APIClient.shared
+        
+        title = "TableView + Networking"
+        navigationController?.view.backgroundColor = .white
+        
+        
+        
+        do {
+            try client.getRecipes().subscribe(
+                onNext: { [weak self] result in
+                    self?.posts = result
+                    // MARK: display in UITableView
+                },
+                onError: { error in
+                    print(error.localizedDescription)
+                },
+                onCompleted: {
+                    print("Event completed")
+                }) .disposed(by: disposedBag)
+        } catch {
+            print(error.localizedDescription)
+        }
     }
-
-
 }
 
