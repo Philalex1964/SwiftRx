@@ -60,7 +60,8 @@ private extension ChocolatesOfTheWorldViewController {
 //MARK: - Imperative methods
 private extension ChocolatesOfTheWorldViewController {
   func updateCartButton() {
-    cartButton.title = "\(ShoppingCart.sharedCart.chocolates.count) 🍫"
+//    cartButton.title = "\(ShoppingCart.sharedCart.chocolates.count) 🍫"
+    cartButton.title = "\(ShoppingCart.sharedCart.chocolates.value.count) \u{1f36b}"
   }
 }
 
@@ -93,7 +94,9 @@ extension ChocolatesOfTheWorldViewController: UITableViewDelegate {
     tableView.deselectRow(at: indexPath, animated: true)
     
     let chocolate = europeanChocolates[indexPath.row]
-    ShoppingCart.sharedCart.chocolates.append(chocolate)
+//    ShoppingCart.sharedCart.chocolates.append(chocolate)
+    let newValue =  ShoppingCart.sharedCart.chocolates.value + [chocolate]
+    ShoppingCart.sharedCart.chocolates.accept(newValue)
     updateCartButton()
   }
 }
