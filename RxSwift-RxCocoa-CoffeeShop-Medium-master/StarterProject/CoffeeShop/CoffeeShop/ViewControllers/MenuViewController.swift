@@ -61,15 +61,21 @@ class MenuViewController: BaseViewController {
                 }
             })
             .disposed(by: disposeBag)
+        
+        ShoppingCart.shared.getTotalCount()
+              .subscribe(onNext: { [weak self] totalOrderCount in
+                self?.shoppingCartButton.badgeText = totalOrderCount != 0 ? "\(totalOrderCount)" : nil
+              })
+              .disposed(by: disposeBag)
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        let totalOrderCount = ShoppingCart.shared.getTotalCount()
-        
-        shoppingCartButton.badgeText = totalOrderCount != 0 ? "\(totalOrderCount)" : nil
-    }
+//    override func viewWillAppear(_ animated: Bool) {
+//        super.viewWillAppear(animated)
+//        
+//        let totalOrderCount = ShoppingCart.shared.getTotalCount()
+//        
+//        shoppingCartButton.badgeText = totalOrderCount != 0 ? "\(totalOrderCount)" : nil
+//    }
     
     private func configureTableView() {
         //    tableView.delegate = self
