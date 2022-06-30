@@ -21,7 +21,7 @@ class LoginViewController: UIViewController {
         let emailPattern = "[A-Z0-9a-z._%+-]+@([A-Za-z0-9.-]{2,64})+\\.[A-Za-z]{2,64}"
         let predicate = NSPredicate(format: "SELF MATCHES %@", emailPattern)
 
-        return predicate.evaluate(with: email)
+        return true //predicate.evaluate(with: email)
     }
 
     
