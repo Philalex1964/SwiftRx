@@ -46,7 +46,7 @@ extension CartViewController {
 //MARK: - IBActions
 extension CartViewController {
   @IBAction func reset() {
-    ShoppingCart.sharedCart.chocolates.accept([])
+    ShoppingCart.sharedCart.chocolates = []
     let _ = navigationController?.popViewController(animated: true)
   }
 }
