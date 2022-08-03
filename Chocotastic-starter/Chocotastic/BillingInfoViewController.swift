@@ -71,7 +71,7 @@ private extension BillingInfoViewController {
     cardType
       .asObservable()
       .subscribe(onNext: { [unowned self] cardType in
-            self.creditCardImageView.image = cardType.image
+        self.creditCardImageView.image = cardType.image
       })
       .disposed(by: disposeBag)
   }
@@ -79,19 +79,19 @@ private extension BillingInfoViewController {
   func setupTextChangeHandling() {
     let creditCardValid = creditCardNumberTextField
       .rx
-      .text //1
+      .text // RxCocoa extension to UITextField
       .observeOn(MainScheduler.asyncInstance)
       .distinctUntilChanged()
-      .throttle(.milliseconds(throttleIntervalInMilliseconds), scheduler: MainScheduler.instance) //2
+      .throttle(.microseconds(throttleIntervalInMilliseconds), scheduler: MainScheduler.instance)
       .map { [unowned self] in
-        self.validate(cardText: $0) //3
-    }
-      
+        self.validate(cardText: $0)
+      }
+    
     creditCardValid
       .subscribe(onNext: { [unowned self] in
-        self.creditCardNumberTextField.valid = $0 //4
+        self.creditCardNumberTextField.valid = $0
       })
-      .disposed(by: disposeBag) //5
+      .disposed(by: disposeBag)
     
     let expirationValid = expirationDateTextField
       .rx
@@ -123,7 +123,7 @@ private extension BillingInfoViewController {
         self.cvvTextField.valid = $0
       })
       .disposed(by: disposeBag)
-    
+
     let everythingValid = Observable
       .combineLatest(creditCardValid, expirationValid, cvvValid) {
         $0 && $1 && $2 //All must be true

@@ -39,6 +39,7 @@ extension CartViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     title = "Cart"
+    
     configureFromCart()
   }
 }
